@@ -602,10 +602,6 @@ export class PumpFunSDK {
 
     console.log(`getSellInstructionsByTokenAmount - amount=${sellTokenAmount}, exactOutput=${minSolOutput}, withSlippage=${sellAmountWithSlippage}`);
 
-    // Get bonding curve creator
-    const bondingCurvePDA = this.getBondingCurvePDA(mint);
-    const bondingCurveCreator = await this.getBondingCurveCreator(bondingCurvePDA, commitment);
-
     return await this.getSellInstructions(
       seller,
       mint,
@@ -639,6 +635,7 @@ export class PumpFunSDK {
     // Get global account PDA
     const globalAccountPDA = this.getGlobalAccountPda();
 
+    // Get bonding curve creator using helper function
     const bondingCurveCreator = await this.getBondingCurveCreator(bondingCurvePDA, commitment);
     
     // Derive creator_vault PDA using bonding curve creator
@@ -657,9 +654,8 @@ export class PumpFunSDK {
       { pubkey: associatedUser, isSigner: false, isWritable: true },
       { pubkey: seller, isSigner: true, isWritable: true },
       { pubkey: new PublicKey(SYSTEM_PROGRAM_ID), isSigner: false, isWritable: false },
-      { pubkey: new PublicKey(ASSOCIATED_TOKEN_PROGRAM_ID), isSigner: false, isWritable: false },
-      { pubkey: new PublicKey(TOKEN_PROGRAM_ID), isSigner: false, isWritable: false },
       { pubkey: creatorVaultPda, isSigner: false, isWritable: true },
+      { pubkey: new PublicKey(TOKEN_PROGRAM_ID), isSigner: false, isWritable: false },
       { pubkey: eventAuthorityPda, isSigner: false, isWritable: false },
       { pubkey: this.program.programId, isSigner: false, isWritable: false }
     ];
