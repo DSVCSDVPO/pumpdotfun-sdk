@@ -647,8 +647,9 @@ export class PumpFunSDK {
       { pubkey: associatedUser, isSigner: false, isWritable: true },
       { pubkey: seller, isSigner: true, isWritable: true },
       { pubkey: new PublicKey(SYSTEM_PROGRAM_ID), isSigner: false, isWritable: false },
-      { pubkey: creatorVaultPda, isSigner: false, isWritable: true },
+      { pubkey: new PublicKey(ASSOCIATED_TOKEN_PROGRAM_ID), isSigner: false, isWritable: false },
       { pubkey: new PublicKey(TOKEN_PROGRAM_ID), isSigner: false, isWritable: false },
+      { pubkey: creatorVaultPda, isSigner: false, isWritable: true },
       { pubkey: eventAuthorityPda, isSigner: false, isWritable: false },
       { pubkey: this.program.programId, isSigner: false, isWritable: false }
     ];
@@ -772,7 +773,7 @@ export class PumpFunSDK {
 
   private getCreatorVaultPda(creator: PublicKey): PublicKey {
     return PublicKey.findProgramAddressSync(
-      [Buffer.from("creator_vault"), creator.toBuffer()],
+      [Buffer.from("creator-vault"), creator.toBuffer()],
       this.program.programId
     )[0];
   }
