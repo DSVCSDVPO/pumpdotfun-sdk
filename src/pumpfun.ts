@@ -467,12 +467,17 @@ export class PumpFunSDK {
 
     let globalAccount = await this.getGlobalAccount(commitment);
 
+    // Get bonding curve creator
+    const bondingCurvePDA = this.getBondingCurvePDA(mint);
+    const bondingCurveCreator = await this.getBondingCurveCreator(bondingCurvePDA, commitment);
+
     return await this.getBuyInstructions(
       buyer,
       mint,
       globalAccount.feeRecipient,
       buyAmount,
-      buyAmountWithSlippage
+      buyAmountWithSlippage,
+      commitment
     );
   }
 
@@ -597,12 +602,17 @@ export class PumpFunSDK {
 
     console.log(`getSellInstructionsByTokenAmount - amount=${sellTokenAmount}, exactOutput=${minSolOutput}, withSlippage=${sellAmountWithSlippage}`);
 
+    // Get bonding curve creator
+    const bondingCurvePDA = this.getBondingCurvePDA(mint);
+    const bondingCurveCreator = await this.getBondingCurveCreator(bondingCurvePDA, commitment);
+
     return await this.getSellInstructions(
       seller,
       mint,
       globalAccount.feeRecipient,
       sellTokenAmount,
-      sellAmountWithSlippage
+      sellAmountWithSlippage,
+      commitment
     );
   }
 
